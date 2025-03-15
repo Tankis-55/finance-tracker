@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
 
+
+
 function App() {
     return (
         <Router>

@@ -9,10 +9,13 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.log('❌ MongoDB Connection Error:', err));
 
-const app = express(); // Создаем `app`
-app.use(express.json()); // Позволяет серверу обрабатывать JSON
+const app = express();
+app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+const transactionRoutes = require('./routes/transactionRoutes'); // Подключаем маршруты
+app.use('/api/transactions', transactionRoutes);
+
+const PORT = process.env.PORT || 5001;
 
 app.get('/', (req, res) => {
     res.send('✅ API is running!');
