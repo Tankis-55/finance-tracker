@@ -1,24 +1,46 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-require('dotenv').config();
+console.log("🔍 MONGO_URI:", process.env.MONGO_URI || "NOT LOADED"); // Проверяем загрузку
 
-console.log("🔍 MONGO_URI:", process.env.MONGO_URI || "NOT LOADED");
-
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.log('❌ MongoDB Connection Error:', err));
+if (!process.env.MONGO_URI) {
+    console.error("❌ Ошибка: переменная окружения MONGO_URI не найдена!");
+    process.exit(1);
+}
 
 const app = express();
-app.use(express.json());
+app.use(cors());
+app.use(express.json()); // Это ОЧЕНЬ ВАЖНО, чтобы API принимал JSON
 
-const transactionRoutes = require('./routes/transactionRoutes'); // Подключаем маршруты
-app.use('/api/transactions', transactionRoutes);
+// Подключение маршрутов
+const transactionRoutes = require("./routes/transactionRoutes");
+app.use("/api/transactions", transactionRoutes);
 
-const PORT = process.env.PORT || 5001;
-
-app.get('/', (req, res) => {
-    res.send('✅ API is running!');
+app.get("/", (req, res) => {
+    res.send("✅ API работает!");
 });
 
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// Подключение к MongoDB
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+    console.error("❌ Ошибка: переменная окружения MONGO_URI не найдена!");
+    process.exit(1);
+}
+
+mongoose
+    .connect(MONGO_URI)
+    .then(() => console.log("✅ MongoDB Connected"))
+    .catch((err) => {
+        console.error("❌ MongoDB Connection Error:", err);
+        process.exit(1);
+    });
+
+// Запуск сервера
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => console.log(`✅ Сервер запущен на порту ${PORT}`));
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Сервер запущен и слушает порт ${PORT}`);
+});
