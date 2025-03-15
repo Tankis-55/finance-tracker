@@ -1,1 +1,0 @@
-gitfinance-tracker
