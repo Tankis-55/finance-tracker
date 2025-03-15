@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/Tankis-55/finance-tracker/issues"
   },
-  "homepage": "https://github.com/Tankis-55/finance-tracker#readme"
+  "homepage": "https://github.com/Tankis-55/finance-tracker#readme",
+  "dependencies": {
+    "react-firebase-hooks": "^5.1.1",
+    "react-router-dom": "^7.3.0"
+  }
 }
